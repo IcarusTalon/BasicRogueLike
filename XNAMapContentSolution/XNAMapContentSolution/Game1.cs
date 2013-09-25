@@ -16,12 +16,14 @@ namespace XNAMapContentSolution
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+
+        Texture2D _mapFloor;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -33,7 +35,6 @@ namespace XNAMapContentSolution
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
             base.Initialize();
         }
@@ -45,9 +46,9 @@ namespace XNAMapContentSolution
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            _mapFloor = Content.Load<Texture2D>("floor");
         }
 
         /// <summary>
@@ -70,7 +71,6 @@ namespace XNAMapContentSolution
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
@@ -83,7 +83,12 @@ namespace XNAMapContentSolution
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+
+
+
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_mapFloor, new Rectangle(0, 0, 32, 32), FloorTiles.GreentTile, Color.White);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
