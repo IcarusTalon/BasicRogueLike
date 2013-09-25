@@ -16,12 +16,12 @@ namespace XNAMapContentSolution
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -33,7 +33,7 @@ namespace XNAMapContentSolution
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            PlayerTexture.SpriteSheet = Content.Load<Texture2D>("player");
 
             base.Initialize();
         }
@@ -45,7 +45,7 @@ namespace XNAMapContentSolution
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
         }
@@ -83,7 +83,11 @@ namespace XNAMapContentSolution
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+
+            _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(4, 7), PlayerTexture.HumanMale, Color.White);
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
