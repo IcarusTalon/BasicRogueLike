@@ -7,17 +7,6 @@ using Microsoft.Xna.Framework;
 
 namespace XNAMapContentSolution
 {
-    public enum MapType
-    {
-        Wall = 1,
-        Floor
-    }
-
-    public class MapTile
-    {
-        public MapType MapType;
-        public Rectangle DestinationRectangle; 
-    }
 
 
     public class Map
@@ -38,15 +27,11 @@ namespace XNAMapContentSolution
                     _mapTiles[row, column] = new MapTile();
                     if (row == 1 && column == 1)
                     {
-
-                        _mapTiles[row, column].MapType = MapType.Floor;
-                        _mapTiles[row, column].DestinationRectangle = new Rectangle(column * 32, row * 32, 32, 32);
+                        _mapTiles[row, column].Initialize(FloorTiles.GreentTile, new Rectangle(), new Rectangle[]{new Rectangle()}, new Rectangle(row * 32, column * 32, 32, 32));
                     }
                     else
                     {
-
-                        _mapTiles[row, column].MapType = MapType.Wall;
-                        _mapTiles[row, column].DestinationRectangle = new Rectangle(column * 32, row * 32, 32, 32);
+                        _mapTiles[row, column].Initialize(WallTiles.GreentWalls[0], new Rectangle(column * 32, row * 32, 32, 32));
                     }
 
                 }
@@ -54,7 +39,7 @@ namespace XNAMapContentSolution
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
 
 
@@ -62,15 +47,17 @@ namespace XNAMapContentSolution
             {
                 for (int column = 0; column < _columnNumber; column++)
                 {
-                    switch (_mapTiles[row, column].MapType)
-                    {
-                        case MapType.Wall:
-                            spriteBatch.Draw(WallTiles.WallSheet, _mapTiles[row, column].DestinationRectangle, WallTiles.GreentWalls[0], Color.White);
-                            break;
-                        case MapType.Floor:
-                            spriteBatch.Draw(FloorTiles.FloorSheet, _mapTiles[row, column].DestinationRectangle, FloorTiles.GreentTile, Color.White);
-                            break;
-                    }
+                    //switch (_mapTiles[row, column].MapType)
+                    //{
+                    //    case MapType.Wall:
+                    //        spriteBatch.Draw(WallTiles.WallSheet, _mapTiles[row, column].DestinationRectangle, WallTiles.GreentWalls[0], Color.White);
+                    //        break;
+                    //    case MapType.Floor:
+                    //        spriteBatch.Draw(FloorTiles.FloorSheet, _mapTiles[row, column].DestinationRectangle, FloorTiles.GreentTile, Color.White);
+                    //        break;
+                    //}
+
+                    _mapTiles[row, column].Draw(gameTime, spriteBatch);
                 }
             }
 

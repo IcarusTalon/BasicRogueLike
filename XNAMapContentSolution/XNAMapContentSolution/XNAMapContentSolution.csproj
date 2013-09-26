@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="FloorTiles.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="MapTile.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerTexture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

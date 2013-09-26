@@ -21,6 +21,8 @@ namespace XNAMapContentSolution
 
         private Map _map;
 
+        //Tile _playerTile;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -40,6 +42,8 @@ namespace XNAMapContentSolution
         {
             _map.Initialize();
 
+
+
             base.Initialize();
         }
 
@@ -55,6 +59,8 @@ namespace XNAMapContentSolution
             PlayerTexture.SpriteSheet = Content.Load<Texture2D>("player");
             WallTiles.WallSheet = Content.Load<Texture2D>("wall");
             FloorTiles.FloorSheet = Content.Load<Texture2D>("floor");
+
+            //_playerTile = new Tile(1, Content, _graphics.GraphicsDevice);
         }
 
         /// <summary>
@@ -92,9 +98,10 @@ namespace XNAMapContentSolution
             _spriteBatch.Begin();
 
           
-            _map.Draw(_spriteBatch);
+            _map.Draw(gameTime, _spriteBatch);
 
-            _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(36, 32), PlayerTexture.HumanMale, Color.White);
+           // _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(36, 32), PlayerTexture.HumanMale, Color.White);
+            //_playerTile.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

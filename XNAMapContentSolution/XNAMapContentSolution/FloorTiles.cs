@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace XNAMapContentSolution
 {
+
     public static class FloorTiles
     {
         private static int _height = 32;
