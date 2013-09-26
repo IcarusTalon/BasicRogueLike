@@ -19,12 +19,15 @@ namespace XNAMapContentSolution
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
 
-        Texture2D _mapFloor;
+        private Map _map;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+
+            _map = new Map();
         }
 
         /// <summary>
@@ -35,6 +38,7 @@ namespace XNAMapContentSolution
         /// </summary>
         protected override void Initialize()
         {
+            _map.Initialize();
 
             base.Initialize();
         }
@@ -48,7 +52,8 @@ namespace XNAMapContentSolution
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _mapFloor = Content.Load<Texture2D>("floor");
+            WallTiles.WallSheet = Content.Load<Texture2D>("wall");
+            FloorTiles.FloorSheet = Content.Load<Texture2D>("floor");
         }
 
         /// <summary>
@@ -87,7 +92,8 @@ namespace XNAMapContentSolution
 
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_mapFloor, new Rectangle(0, 0, 32, 32), FloorTiles.GreentTile, Color.White);
+
+            _map.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

@@ -12,6 +12,8 @@ namespace XNAMapContentSolution
         private static int _height = 32;
         private static int _width = 32;
 
+        public static Texture2D FloorSheet;
+
         private static Rectangle _greentTile;
         public static Rectangle GreentTile
         {
