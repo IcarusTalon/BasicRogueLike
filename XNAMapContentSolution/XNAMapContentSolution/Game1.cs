@@ -39,7 +39,6 @@ namespace XNAMapContentSolution
         protected override void Initialize()
         {
             _map.Initialize();
-            PlayerTexture.SpriteSheet = Content.Load<Texture2D>("player");
 
             base.Initialize();
         }
@@ -53,6 +52,7 @@ namespace XNAMapContentSolution
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            PlayerTexture.SpriteSheet = Content.Load<Texture2D>("player");
             WallTiles.WallSheet = Content.Load<Texture2D>("wall");
             FloorTiles.FloorSheet = Content.Load<Texture2D>("floor");
         }
@@ -91,10 +91,10 @@ namespace XNAMapContentSolution
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(4, 7), PlayerTexture.HumanMale, Color.White);
-
           
             _map.Draw(_spriteBatch);
+
+            _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(4, 7), PlayerTexture.HumanMale, Color.White);
             _spriteBatch.End();
 
             base.Draw(gameTime);
