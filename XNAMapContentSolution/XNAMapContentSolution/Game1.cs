@@ -94,7 +94,7 @@ namespace XNAMapContentSolution
           
             _map.Draw(_spriteBatch);
 
-            _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(4, 7), PlayerTexture.HumanMale, Color.White);
+            _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(36, 32), PlayerTexture.HumanMale, Color.White);
             _spriteBatch.End();
 
             base.Draw(gameTime);
