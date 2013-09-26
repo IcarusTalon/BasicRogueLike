@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace XNAMapContentSolution
 {
-    public static class PlayerTexture
+    public static class PlayerSprite
     {
 
         public static Texture2D SpriteSheet;
