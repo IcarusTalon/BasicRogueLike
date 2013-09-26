@@ -39,6 +39,7 @@ namespace XNAMapContentSolution
         protected override void Initialize()
         {
             _map.Initialize();
+            PlayerTexture.SpriteSheet = Content.Load<Texture2D>("player");
 
             base.Initialize();
         }
@@ -88,11 +89,11 @@ namespace XNAMapContentSolution
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-
-
-
             _spriteBatch.Begin();
 
+            _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(4, 7), PlayerTexture.HumanMale, Color.White);
+
+          
             _map.Draw(_spriteBatch);
             _spriteBatch.End();
 
