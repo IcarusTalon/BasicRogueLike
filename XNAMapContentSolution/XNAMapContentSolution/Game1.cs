@@ -21,6 +21,15 @@ namespace XNAMapContentSolution
 
         private KeyboardState _currentKeyboardState;
         private KeyboardState _previousKeyboardState;
+        private List<Keys> keysPressed;
+        private Keys _lastKeyPressed;
+
+        private bool _canPressKey;
+
+        private Queue<Keys> keysQueue;
+
+        private TimeSpan _lastUpdate;
+        private TimeSpan _lastKeyPress;
 
         private Map _map;
 
@@ -31,9 +40,15 @@ namespace XNAMapContentSolution
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            keysPressed = new List<Keys>();
+            keysQueue = new Queue<Keys>();
+
 
             _map = new Map();
             _player = new Player();
+            _lastUpdate = TimeSpan.FromMilliseconds(0);
+            _lastKeyPress = TimeSpan.FromMilliseconds(0);
+            _canPressKey = true;
         }
 
         /// <summary>
@@ -46,9 +61,7 @@ namespace XNAMapContentSolution
         {
             _map.Initialize();
             _player.Initialize(1, 1);
-
-
-
+            
             base.Initialize();
         }
 
@@ -88,12 +101,42 @@ namespace XNAMapContentSolution
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            _previousKeyboardState = _currentKeyboardState;
+            
             _currentKeyboardState = Keyboard.GetState();
 
-            PlayerUpdate();
+            if (_currentKeyboardState.GetPressedKeys().Count() == 0)
+            {
+                _canPressKey = true;
+            }
+            if (_currentKeyboardState.GetPressedKeys().Count() == 1 && !_canPressKey && _lastKeyPressed != _currentKeyboardState.GetPressedKeys()[0])
+            {
+                _canPressKey = true;
+            }
+            if (_currentKeyboardState.GetPressedKeys().Count() == 1 && _canPressKey)
+            {
+                Keys currentKey = _currentKeyboardState.GetPressedKeys()[0];
 
-            base.Update(gameTime);
+                    keysQueue.Enqueue(currentKey);
+                    _lastKeyPressed = currentKey;
+                    _canPressKey = false;
+            }
+
+            //foreach (Keys currentKey in _currentKeyboardState.GetPressedKeys())
+            //{
+            //    if (!keysPressed.Contains(currentKey))
+            //    {
+            //        keysPressed.Add(currentKey);
+            //    }
+            //}
+
+
+            if (keysQueue.Count() > 0 && gameTime.TotalGameTime > _lastUpdate.Add(TimeSpan.FromMilliseconds(400)))
+            {
+                    PlayerUpdate();
+
+                    base.Update(gameTime);
+                    _lastUpdate = gameTime.TotalGameTime;
+            }
         }
 
         /// <summary>
@@ -120,25 +163,25 @@ namespace XNAMapContentSolution
 
         private void PlayerUpdate()
         {
-            //_player.Update(gameTime);
+            
+            Keys currentKeyToProcess = keysQueue.Dequeue();
 
-            if (_currentKeyboardState.IsKeyDown(Keys.A))
+            if (currentKeyToProcess == Keys.A && !_map[_player.X - 1, _player.Y].IsBlocked)
             {
-                _player.X = -1;
+                _player.X += -1;
             }
-            if (_currentKeyboardState.IsKeyDown(Keys.D))
+            else if (currentKeyToProcess == Keys.D && !_map[_player.X + 1, _player.Y].IsBlocked)
             {
-                _player.X = 1;
+                _player.X += 1;
             }
-            if (_currentKeyboardState.IsKeyDown(Keys.W))
+            else if (currentKeyToProcess == Keys.W && !_map[_player.X, _player.Y - 1].IsBlocked)
             {
-                _player.Y = -1;
+                _player.Y += -1;
             }
-            if (_currentKeyboardState.IsKeyDown(Keys.S))
+            else if (currentKeyToProcess == Keys.S && !_map[_player.X, _player.Y + 1].IsBlocked)
             {
-                _player.Y = 1;
+                _player.Y += 1;
             }
- 
         }
     }
 }
