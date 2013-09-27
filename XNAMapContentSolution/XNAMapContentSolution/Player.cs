@@ -14,30 +14,45 @@ namespace XNAMapContentSolution
 
         private Rectangle _position;
 
-        private int _x;
-        //public int X
+        //public Rectangle Position
         //{
         //    get
         //    {
-        //        return _x;
-        //    }
-        //    set
-        //    {
-        //        _x = value;
+        //        return _position;
         //    }
         //}
 
-        private int _y;
+        public int X
+        {
+            get
+            {
+                return _position.X;
+            }
+            set
+            {
+                _position.X += value * 32;
+            }
+        }
+
+        public int Y
+        {
+            get
+            {
+                return _position.Y;
+            }
+            set
+            {
+                _position.Y += value * 32;
+            }
+        }
 
 
 
         public void Initialize(int x, int y)
         {
             _bodyTexture = PlayerSprite.HumanMale;
-            _x = x;
-            _y = y;
 
-            _position = new Rectangle(_x * 32, _y * 32, 32, 32);
+            _position = new Rectangle((x * 32) + ((32 - _bodyTexture.Width) / 2), y * 32 + ((32 - _bodyTexture.Height) / 2), _bodyTexture.Width, _bodyTexture.Height);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -45,12 +60,12 @@ namespace XNAMapContentSolution
             spriteBatch.Draw(PlayerSprite.SpriteSheet, _position , _bodyTexture, Color.White);
         }
 
-        public void Update(int x, int y)
-        {
-            _x = x;
-            _y = y;
+        //public void Update(GameTime gameTime)
+        //{
+        //    _position.X += _position.X;
+        //    _position.Y += _position.Y;
+        //}
 
-            _position = new Rectangle(_x * 32, _y * 32, 32, 32);
-        }
+
     }
 }

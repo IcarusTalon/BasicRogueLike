@@ -19,6 +19,9 @@ namespace XNAMapContentSolution
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
 
+        private KeyboardState _currentKeyboardState;
+        private KeyboardState _previousKeyboardState;
+
         private Map _map;
 
         Player _player;
@@ -85,6 +88,10 @@ namespace XNAMapContentSolution
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            _previousKeyboardState = _currentKeyboardState;
+            _currentKeyboardState = Keyboard.GetState();
+
+            PlayerUpdate();
 
             base.Update(gameTime);
         }
@@ -109,6 +116,29 @@ namespace XNAMapContentSolution
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void PlayerUpdate()
+        {
+            //_player.Update(gameTime);
+
+            if (_currentKeyboardState.IsKeyDown(Keys.A))
+            {
+                _player.X = -1;
+            }
+            if (_currentKeyboardState.IsKeyDown(Keys.D))
+            {
+                _player.X = 1;
+            }
+            if (_currentKeyboardState.IsKeyDown(Keys.W))
+            {
+                _player.Y = -1;
+            }
+            if (_currentKeyboardState.IsKeyDown(Keys.S))
+            {
+                _player.Y = 1;
+            }
+ 
         }
     }
 }
