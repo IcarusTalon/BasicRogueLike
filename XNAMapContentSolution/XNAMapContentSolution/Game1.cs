@@ -138,24 +138,39 @@ namespace XNAMapContentSolution
             //_player.Update(gameTime);
             if (gameTime.TotalGameTime > _lastPlayerUpdate.Add(TimeSpan.FromMilliseconds(300)))
             {
-                
-                if (_currentKeyboardState.IsKeyDown(Keys.A) && !_map[_player.X - 1, _player.Y].IsBlocked)
-                {
-                    _player.X += -1;
-                }
-                else if (_currentKeyboardState.IsKeyDown(Keys.D) && !_map[_player.X + 1, _player.Y].IsBlocked)
-                {
-                    _player.X += 1;
-                }
-                else if (_currentKeyboardState.IsKeyDown(Keys.W) && !_map[_player.X, _player.Y - 1].IsBlocked)
-                {
-                    _player.Y += -1;
-                }
-                else if (_currentKeyboardState.IsKeyDown(Keys.S) && !_map[_player.X, _player.Y + 1].IsBlocked)
-                {
-                    _player.Y += 1;
-                }
 
+                if ((_currentKeyboardState.IsKeyDown(Keys.W) || _currentKeyboardState.IsKeyDown(Keys.NumPad8)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Up))
+                {
+                    _player.Move(Direction.Up);
+                }
+                else if (_currentKeyboardState.IsKeyDown(Keys.NumPad9) && !_map.IsBlocked(_player.CurrentPosition, Direction.UpRight))
+                {
+                    _player.Move(Direction.UpRight);
+                }
+                else if ((_currentKeyboardState.IsKeyDown(Keys.D) || _currentKeyboardState.IsKeyDown(Keys.NumPad6)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Right))
+                {
+                    _player.Move(Direction.Right);
+                }
+                else if (_currentKeyboardState.IsKeyDown(Keys.NumPad3) && !_map.IsBlocked(_player.CurrentPosition, Direction.DownRight))
+                {
+                    _player.Move(Direction.DownRight);
+                }
+                else if ((_currentKeyboardState.IsKeyDown(Keys.S) || _currentKeyboardState.IsKeyDown(Keys.NumPad2)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Down))
+                {
+                    _player.Move(Direction.Down);
+                }
+                else if (_currentKeyboardState.IsKeyDown(Keys.NumPad1) && !_map.IsBlocked(_player.CurrentPosition, Direction.DownLeft))
+                {
+                    _player.Move(Direction.DownLeft);
+                }
+                else if ((_currentKeyboardState.IsKeyDown(Keys.A) || _currentKeyboardState.IsKeyDown(Keys.NumPad4)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Left))
+                {
+                    _player.Move(Direction.Left);
+                }
+                else if (_currentKeyboardState.IsKeyDown(Keys.NumPad7) && !_map.IsBlocked(_player.CurrentPosition, Direction.UpLeft))
+                {
+                    _player.Move(Direction.UpLeft);
+                }
 
                 _lastPlayerUpdate = gameTime.TotalGameTime;
             }

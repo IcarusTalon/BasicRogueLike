@@ -20,14 +20,14 @@ namespace XNAMapContentSolution
         {
             get
             {
-                return _mapTiles[X, Y]; 
+                return _mapTiles[X, Y];
             }
         }
 
 
         public void Initialize()
         {
-            
+
             _mapTiles = new MapTile[_rowNumber, _columnNumber];
 
 
@@ -41,12 +41,12 @@ namespace XNAMapContentSolution
                 mapTemp = streamReader.ReadToEnd();
                 mapRowsTemp = mapTemp.Split('\n');
                 mapColumnTemp = mapRowsTemp[0].Split(',');
-                
+
 
                 _mapTiles = new MapTile[mapColumnTemp.Count(), mapRowsTemp.Count()];
                 Random random = new Random();
 
-                for (int i = mapRowsTemp.Count() - 1; i >= 0 ; i--)
+                for (int i = mapRowsTemp.Count() - 1; i >= 0; i--)
                 {
                     mapColumnTemp = mapRowsTemp[i].Split(',');
                     for (int j = mapColumnTemp.Count() - 1; j >= 0; j--)
@@ -55,9 +55,9 @@ namespace XNAMapContentSolution
                         Rectangle positionRectangle = new Rectangle(j * 32, i * 32, 32, 32);
                         _mapTiles[j, i] = new MapTile();
 
-                        switch(currentTile)                        
+                        switch (currentTile)
                         {
-                                //Walls
+                            //Walls
                             case MapTileType.GreenWall:
                                 if (random.Next(0, 10) == 0)
                                 {
@@ -68,63 +68,89 @@ namespace XNAMapContentSolution
                                     _mapTiles[j, i].Initialize(WallTiles.GreentWalls[0], positionRectangle);
                                 }
                                 break;
-                                
-                            
+
+
                             //Floors
                             case MapTileType.GreenFloor:
                                 _mapTiles[j, i].Initialize(FloorTiles.GreentTile, new Rectangle(), new Rectangle[] { new Rectangle() }, positionRectangle);
                                 break;
 
                         }
-                        
+
                     }
-                    
+
                 }
             }
-
-            //for (int row = 0; row < _rowNumber; row++)
-            //{
-            //    for (int column = 0; column < _columnNumber; column++)
-            //    {
-            //        _mapTiles[row, column] = new MapTile();
-            //        if (row == 1 && column == 1)
-            //        {
-            //            _mapTiles[row, column].Initialize(FloorTiles.GreentTile, new Rectangle(), new Rectangle[]{new Rectangle()}, new Rectangle(row * 32, column * 32, 32, 32));
-            //        }
-            //        else
-            //        {
-            //            _mapTiles[row, column].Initialize(WallTiles.GreentWalls[0], new Rectangle(column * 32, row * 32, 32, 32));
-            //        }
-
-            //    }
-
-            //}
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-
-
             for (int row = 0; row < _mapTiles.GetLength(0); row++)
             {
                 for (int column = 0; column < _mapTiles.GetLength(1); column++)
                 {
-                    //switch (_mapTiles[row, column].MapType)
-                    //{
-                    //    case MapType.Wall:
-                    //        spriteBatch.Draw(WallTiles.WallSheet, _mapTiles[row, column].DestinationRectangle, WallTiles.GreentWalls[0], Color.White);
-                    //        break;
-                    //    case MapType.Floor:
-                    //        spriteBatch.Draw(FloorTiles.FloorSheet, _mapTiles[row, column].DestinationRectangle, FloorTiles.GreentTile, Color.White);
-                    //        break;
-                    //}
-
                     _mapTiles[row, column].Draw(gameTime, spriteBatch);
                 }
             }
+        }
 
-            
- 
+        public bool IsBlocked(Point startPoint, Direction direction)
+        {
+            bool isBlocked = false;
+
+            switch (direction)
+            {
+                case Direction.Up:
+                    if (this[startPoint.X, startPoint.Y - 1].IsBlocked)
+                    {
+                        isBlocked = true;
+                    }
+                    break;
+                case Direction.UpRight:
+                    if (this[startPoint.X + 1, startPoint.Y - 1].IsBlocked)
+                    {
+                        isBlocked = true;
+                    }
+                    break;
+                case Direction.Right:
+                    if (this[startPoint.X + 1, startPoint.Y].IsBlocked)
+                    {
+                        isBlocked = true;
+                    }
+                    break;
+                case Direction.DownRight:
+                    if (this[startPoint.X + 1, startPoint.Y + 1].IsBlocked)
+                    {
+                        isBlocked = true;
+                    }
+                    break;
+                case Direction.Down:
+                    if (this[startPoint.X, startPoint.Y + 1].IsBlocked)
+                    {
+                        isBlocked = true;
+                    }
+                    break;
+                case Direction.DownLeft:
+                    if (this[startPoint.X - 1, startPoint.Y + 1].IsBlocked)
+                    {
+                        isBlocked = true;
+                    }
+                    break;
+                case Direction.Left:
+                    if (this[startPoint.X - 1, startPoint.Y].IsBlocked)
+                    {
+                        isBlocked = true;
+                    }
+                    break;
+                case Direction.UpLeft:
+                    if (this[startPoint.X - 1, startPoint.Y - 1].IsBlocked)
+                    {
+                        isBlocked = true;
+                    }
+                    break;
+            }
+
+            return isBlocked;
         }
     }
 }

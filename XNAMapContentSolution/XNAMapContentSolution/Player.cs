@@ -25,7 +25,7 @@ namespace XNAMapContentSolution
         private int _x;
         private int _y;
 
-        public int X
+        private int X
         {
             get
             {
@@ -38,7 +38,7 @@ namespace XNAMapContentSolution
             }
         }
 
-        public int Y
+        private int Y
         {
             get
             {
@@ -50,6 +50,93 @@ namespace XNAMapContentSolution
                 _position.Y = _y * 32 + ((32 - _bodyTexture.Height) / 2);
             }
         }
+
+        public Point CurrentPosition
+        {
+            get
+            {
+                return new Point(X, Y);
+            }
+        }
+
+        public void Move(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    Y += -1;
+                    break;
+                case Direction.UpRight:
+                    Y += -1;
+                    X += 1;
+                    break;
+                case Direction.Right:
+                    X += 1;
+                    break;
+                case Direction.DownRight:
+                    Y += 1;
+                    X += 1;
+                    break;
+                case Direction.Down:
+                    Y += 1;
+                    break;
+                case Direction.DownLeft:
+                    Y += 1;
+                    X += -1;
+                    break;
+                case Direction.Left:
+                    X += -1;
+                    break;
+                case Direction.UpLeft:
+                    Y += -1;
+                    X += -1;
+                    break;
+            }
+        }
+
+        //public void MoveUp()
+        //{
+        //    Y += -1;
+        //}
+
+        //public void MoveUpRight()
+        //{
+        //    Y += -1;
+        //    X += 1; 
+        //}
+
+        //public void MoveRight()
+        //{
+        //    X += 1;
+        //}
+
+        //public void MoveDownRight()
+        //{
+        //    Y += 1;
+        //    X += 1; 
+        //}
+
+        //public void MoveDown()
+        //{
+        //    Y += 1;
+        //}
+
+        //public void MoveDownLeft()
+        //{
+        //    Y += 1;
+        //    X += -1;
+        //}
+
+        //public void MoveLeft()
+        //{
+        //    X += -1;
+        //}
+
+        //public void MoveUpLeft()
+        //{
+        //    Y += -1;
+        //    X += -1; 
+        //}
 
 
 

@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Direction.cs" />
     <Compile Include="FloorTiles.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MapTile.cs" />
