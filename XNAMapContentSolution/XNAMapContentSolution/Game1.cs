@@ -105,19 +105,8 @@ namespace XNAMapContentSolution
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
-            
              _mouseState = Mouse.GetState();
              _camera.Zoom = ((float) _mouseState.ScrollWheelValue * .001f) + 1.0f;
-
-
-             if (_mouseState.ScrollWheelValue > 0)
-             {
-             }
-
 
             _previousKeyboardState = _currentKeyboardState;
             _currentKeyboardState = Keyboard.GetState();
@@ -126,7 +115,6 @@ namespace XNAMapContentSolution
             _camera.Update(_player.CameraPosition);
 
             base.Update(gameTime);
-
         }
 
         /// <summary>
@@ -143,9 +131,6 @@ namespace XNAMapContentSolution
             _map.Draw(gameTime, _spriteBatch);
 
             _player.Draw(gameTime, _spriteBatch);
-
-           // _spriteBatch.Draw(PlayerTexture.SpriteSheet, new Vector2(36, 32), PlayerTexture.HumanMale, Color.White);
-            //_playerTile.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);
