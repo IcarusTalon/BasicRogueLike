@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 namespace XNAMapContentSolution
 {
@@ -21,6 +22,9 @@ namespace XNAMapContentSolution
 
         private KeyboardState _currentKeyboardState;
         private KeyboardState _previousKeyboardState;
+
+        private MouseState _mouseState;
+
         private List<Keys> keysPressed;
         private Keys _lastKeyPressed;
 
@@ -34,10 +38,15 @@ namespace XNAMapContentSolution
         private Map _map;
 
         Player _player;
+        Camera _camera;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.IsFullScreen = false;
+            _graphics.PreferredBackBufferHeight = 768;
+            _graphics.PreferredBackBufferWidth = 1024;
+
             Content.RootDirectory = "Content";
 
             keysPressed = new List<Keys>();
@@ -71,14 +80,13 @@ namespace XNAMapContentSolution
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             PlayerSprite.SpriteSheet = Content.Load<Texture2D>("player");
             WallTiles.WallSheet = Content.Load<Texture2D>("wall");
             FloorTiles.FloorSheet = Content.Load<Texture2D>("floor");
 
-            //_playerTile = new Tile(1, Content, _graphics.GraphicsDevice);
+            _camera = new Camera(GraphicsDevice.Viewport);
         }
 
         /// <summary>
@@ -101,11 +109,21 @@ namespace XNAMapContentSolution
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            
+             _mouseState = Mouse.GetState();
+             _camera.Zoom = ((float) _mouseState.ScrollWheelValue * .001f) + 1.0f;
+
+
+             if (_mouseState.ScrollWheelValue > 0)
+             {
+             }
+
 
             _previousKeyboardState = _currentKeyboardState;
             _currentKeyboardState = Keyboard.GetState();
 
             PlayerUpdate(gameTime);
+            _camera.Update(_player.CameraPosition);
 
             base.Update(gameTime);
 
@@ -119,7 +137,7 @@ namespace XNAMapContentSolution
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, _camera.Transform);
 
           
             _map.Draw(gameTime, _spriteBatch);

@@ -16,11 +16,11 @@ namespace XNAMapContentSolution
         int _rowNumber = 3;
         int _columnNumber = 3;
 
-        public MapTile this[int X, int Y]
+        public MapTile this[float X, float Y]
         {
             get
             {
-                return _mapTiles[X, Y];
+                return _mapTiles[(int)X, (int)Y];
             }
         }
 
@@ -94,7 +94,7 @@ namespace XNAMapContentSolution
             }
         }
 
-        public bool IsBlocked(Point startPoint, Direction direction)
+        public bool IsBlocked(Vector2 startPoint, Direction direction)
         {
             bool isBlocked = false;
 

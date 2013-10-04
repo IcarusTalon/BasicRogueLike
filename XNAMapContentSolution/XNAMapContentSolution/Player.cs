@@ -51,11 +51,19 @@ namespace XNAMapContentSolution
             }
         }
 
-        public Point CurrentPosition
+        public Vector2 CurrentPosition
         {
             get
             {
-                return new Point(X, Y);
+                return new Vector2(X, Y);
+            }
+        }
+
+        public Vector2 CameraPosition
+        {
+            get            
+            {
+                return new Vector2(_position.X, _position.Y);
             }
         }
 
