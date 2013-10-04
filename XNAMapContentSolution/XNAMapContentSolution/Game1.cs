@@ -136,45 +136,68 @@ namespace XNAMapContentSolution
         private void PlayerUpdate(GameTime gameTime)
         {
             //_player.Update(gameTime);
-            if (gameTime.TotalGameTime > _lastPlayerUpdate.Add(TimeSpan.FromMilliseconds(300)))
-            {
+            //if (gameTime.TotalGameTime > _lastPlayerUpdate.Add(TimeSpan.FromMilliseconds(300)))
+            //{
+                //if (_previousKeyboardState.IsKeyDown(Keys.L) && _currentKeyboardState.IsKeyUp(Keys.L))
+                //{
+                //    _player.Move(Direction.Right);
+                //    _lastPlayerUpdate = gameTime.TotalGameTime; 
+                //}
+                //else if (_previousKeyboardState.IsKeyDown(Keys.K) && (_currentKeyboardState.IsKeyUp(Keys.K) ||gameTime.TotalGameTime > _lastPlayerUpdate.Add(TimeSpan.FromMilliseconds(500))))
+                //{
+                //    _player.Move(Direction.Left);
+                //    _lastPlayerUpdate = gameTime.TotalGameTime; 
+                //}
 
-                if ((_currentKeyboardState.IsKeyDown(Keys.W) || _currentKeyboardState.IsKeyDown(Keys.NumPad8)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Up))
+
+
+                if ((IsKeyPressed(Keys.W) || IsKeyPressed(Keys.NumPad8)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Up))
                 {
                     _player.Move(Direction.Up);
                 }
-                else if (_currentKeyboardState.IsKeyDown(Keys.NumPad9) && !_map.IsBlocked(_player.CurrentPosition, Direction.UpRight))
+                else if (IsKeyPressed(Keys.NumPad9) && !_map.IsBlocked(_player.CurrentPosition, Direction.UpRight))
                 {
                     _player.Move(Direction.UpRight);
                 }
-                else if ((_currentKeyboardState.IsKeyDown(Keys.D) || _currentKeyboardState.IsKeyDown(Keys.NumPad6)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Right))
+                else if ((IsKeyPressed(Keys.D) || IsKeyPressed(Keys.NumPad6)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Right))
                 {
                     _player.Move(Direction.Right);
                 }
-                else if (_currentKeyboardState.IsKeyDown(Keys.NumPad3) && !_map.IsBlocked(_player.CurrentPosition, Direction.DownRight))
+                else if (IsKeyPressed(Keys.NumPad3) && !_map.IsBlocked(_player.CurrentPosition, Direction.DownRight))
                 {
                     _player.Move(Direction.DownRight);
                 }
-                else if ((_currentKeyboardState.IsKeyDown(Keys.S) || _currentKeyboardState.IsKeyDown(Keys.NumPad2)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Down))
+                else if ((IsKeyPressed(Keys.S) || IsKeyPressed(Keys.NumPad2)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Down))
                 {
                     _player.Move(Direction.Down);
                 }
-                else if (_currentKeyboardState.IsKeyDown(Keys.NumPad1) && !_map.IsBlocked(_player.CurrentPosition, Direction.DownLeft))
+                else if (IsKeyPressed(Keys.NumPad1) && !_map.IsBlocked(_player.CurrentPosition, Direction.DownLeft))
                 {
                     _player.Move(Direction.DownLeft);
                 }
-                else if ((_currentKeyboardState.IsKeyDown(Keys.A) || _currentKeyboardState.IsKeyDown(Keys.NumPad4)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Left))
+                else if ((IsKeyPressed(Keys.A) || IsKeyPressed(Keys.NumPad4)) && !_map.IsBlocked(_player.CurrentPosition, Direction.Left))
                 {
                     _player.Move(Direction.Left);
                 }
-                else if (_currentKeyboardState.IsKeyDown(Keys.NumPad7) && !_map.IsBlocked(_player.CurrentPosition, Direction.UpLeft))
+                else if (IsKeyPressed(Keys.NumPad7) && !_map.IsBlocked(_player.CurrentPosition, Direction.UpLeft))
                 {
                     _player.Move(Direction.UpLeft);
                 }
 
-                _lastPlayerUpdate = gameTime.TotalGameTime;
-            }
+                
+            //}
+            
 
+        }
+
+        private bool IsKeyPressed(Keys keyCheck)
+        {
+            bool returnValue = false;
+            if (_previousKeyboardState.IsKeyDown(keyCheck) && _currentKeyboardState.IsKeyUp(keyCheck))
+            {
+                returnValue = true;
+            }
+            return returnValue;
         }
     }
 }
