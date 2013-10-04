@@ -28,7 +28,7 @@ namespace XNAMapContentSolution
 
         private Queue<Keys> keysQueue;
 
-        private TimeSpan _lastUpdate;
+        private TimeSpan _lastPlayerUpdate;
         private TimeSpan _lastKeyPress;
 
         private Map _map;
@@ -46,7 +46,7 @@ namespace XNAMapContentSolution
 
             _map = new Map();
             _player = new Player();
-            _lastUpdate = TimeSpan.FromMilliseconds(0);
+            _lastPlayerUpdate = TimeSpan.FromMilliseconds(0);
             _lastKeyPress = TimeSpan.FromMilliseconds(0);
             _canPressKey = true;
         }
@@ -101,42 +101,14 @@ namespace XNAMapContentSolution
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            
+
+            _previousKeyboardState = _currentKeyboardState;
             _currentKeyboardState = Keyboard.GetState();
 
-            if (_currentKeyboardState.GetPressedKeys().Count() == 0)
-            {
-                _canPressKey = true;
-            }
-            if (_currentKeyboardState.GetPressedKeys().Count() == 1 && !_canPressKey && _lastKeyPressed != _currentKeyboardState.GetPressedKeys()[0])
-            {
-                _canPressKey = true;
-            }
-            if (_currentKeyboardState.GetPressedKeys().Count() == 1 && _canPressKey)
-            {
-                Keys currentKey = _currentKeyboardState.GetPressedKeys()[0];
+            PlayerUpdate(gameTime);
 
-                    keysQueue.Enqueue(currentKey);
-                    _lastKeyPressed = currentKey;
-                    _canPressKey = false;
-            }
+            base.Update(gameTime);
 
-            //foreach (Keys currentKey in _currentKeyboardState.GetPressedKeys())
-            //{
-            //    if (!keysPressed.Contains(currentKey))
-            //    {
-            //        keysPressed.Add(currentKey);
-            //    }
-            //}
-
-
-            if (keysQueue.Count() > 0 && gameTime.TotalGameTime > _lastUpdate.Add(TimeSpan.FromMilliseconds(400)))
-            {
-                    PlayerUpdate();
-
-                    base.Update(gameTime);
-                    _lastUpdate = gameTime.TotalGameTime;
-            }
         }
 
         /// <summary>
@@ -161,27 +133,33 @@ namespace XNAMapContentSolution
             base.Draw(gameTime);
         }
 
-        private void PlayerUpdate()
+        private void PlayerUpdate(GameTime gameTime)
         {
-            
-            Keys currentKeyToProcess = keysQueue.Dequeue();
+            //_player.Update(gameTime);
+            if (gameTime.TotalGameTime > _lastPlayerUpdate.Add(TimeSpan.FromMilliseconds(300)))
+            {
+                
+                if (_currentKeyboardState.IsKeyDown(Keys.A) && !_map[_player.X - 1, _player.Y].IsBlocked)
+                {
+                    _player.X += -1;
+                }
+                else if (_currentKeyboardState.IsKeyDown(Keys.D) && !_map[_player.X + 1, _player.Y].IsBlocked)
+                {
+                    _player.X += 1;
+                }
+                else if (_currentKeyboardState.IsKeyDown(Keys.W) && !_map[_player.X, _player.Y - 1].IsBlocked)
+                {
+                    _player.Y += -1;
+                }
+                else if (_currentKeyboardState.IsKeyDown(Keys.S) && !_map[_player.X, _player.Y + 1].IsBlocked)
+                {
+                    _player.Y += 1;
+                }
 
-            if (currentKeyToProcess == Keys.A && !_map[_player.X - 1, _player.Y].IsBlocked)
-            {
-                _player.X += -1;
+
+                _lastPlayerUpdate = gameTime.TotalGameTime;
             }
-            else if (currentKeyToProcess == Keys.D && !_map[_player.X + 1, _player.Y].IsBlocked)
-            {
-                _player.X += 1;
-            }
-            else if (currentKeyToProcess == Keys.W && !_map[_player.X, _player.Y - 1].IsBlocked)
-            {
-                _player.Y += -1;
-            }
-            else if (currentKeyToProcess == Keys.S && !_map[_player.X, _player.Y + 1].IsBlocked)
-            {
-                _player.Y += 1;
-            }
+
         }
     }
 }
