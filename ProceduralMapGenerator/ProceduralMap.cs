@@ -13,23 +13,25 @@ namespace ProceduralMapGenerator
 
         private int _chanceToSplit = 10;
 
-        private int _height;
-        private int _width;
+        public int Height;
+        public int Width;
 
         private Random _random;
 
         private List<MapCell> _mapCells;
-        private int[,] _cellValues;
+        public int[,] CellValues;
 
         public ProceduralMap()
         {
             _random = new Random();
 
-            _height = _random.Next(_minimumMapDimension, _maximumMapDimension);
-            _width = _random.Next(_minimumMapDimension, _maximumMapDimension);
+            Height = _random.Next(_minimumMapDimension, _maximumMapDimension);
+            Width = _random.Next(_minimumMapDimension, _maximumMapDimension);
 
             _mapCells = new List<MapCell>();
-            _mapCells.Add(new MapCell { Height = _height, Width = _width }); 
+            _mapCells.Add(new MapCell { Height = Height, Width = Width });
+
+            GenerateMap();
         }
 
         private void GenerateMap()
@@ -46,7 +48,10 @@ namespace ProceduralMapGenerator
                 }
             }
 
-            _cellValues = new int[_height, _width];
+            CellValues = new int[Height, Width];
+
+            int currentCellX = 0;
+            int currentCellY = 0;
 
             int currentX = 0;
             int currentY = 0;
@@ -54,17 +59,17 @@ namespace ProceduralMapGenerator
             foreach (MapCell currentMapCell in _mapCells)
             {
                 currentMapCell.GenerateRoom();
-
-            //for (int i = 0; i < currentMapCell.Width; i++)
-            //{
-            //    for (int j = 0; j < _width; j++)
-            //    {
-
- 
-            //    }
-            //}
-
-
+                currentX =  currentCellX;
+                for (int i = 0; i < currentMapCell.Height; i++)
+                {
+                    for (int j = 0; j < currentMapCell.Width; j++)
+                    {
+                        CellValues[currentY, currentX] = currentMapCell.Value;
+                        currentY++;
+                    }
+                    currentY = currentCellY;
+                    currentX++;
+                }
 
 
             }
@@ -77,14 +82,14 @@ namespace ProceduralMapGenerator
             SplitY(indexOfMapCellToSplit);
         }
 
-        private bool SplitX(int indexOfMapCellToSplit)
+        private void SplitX(int indexOfMapCellToSplit)
         {
-            bool returnValue = false;
 
             //if the width can be split into to cells large enough to hold a room (at least 10 wide)
-            if (_mapCells[indexOfMapCellToSplit].Width - 10 > 0)
+            if (_mapCells[indexOfMapCellToSplit].Width > 10)
             {
-                if (_random.Next(_mapCells[indexOfMapCellToSplit].Width) > _chanceToSplit)
+                int randomChanceToSplit = _random.Next(_mapCells[indexOfMapCellToSplit].Width);
+                if (randomChanceToSplit > _chanceToSplit)
                 {
                     //Calculate width of the old cell and new cell
 
@@ -99,23 +104,19 @@ namespace ProceduralMapGenerator
 
                     //Create new cell at index of old with new width
 
-                    _mapCells.Insert(indexOfMapCellToSplit, new MapCell { Height = _mapCells[indexOfMapCellToSplit].Height, Width = newCellWidth });
-                    returnValue = true;
+                    _mapCells.Insert(indexOfMapCellToSplit + 1, new MapCell { Height = _mapCells[indexOfMapCellToSplit].Height, Width = newCellWidth });
                 }
             }
-
-            return returnValue;
-
         }
 
-        private bool SplitY(int indexOfMapCellToSplit)
+        private void SplitY(int indexOfMapCellToSplit)
         {
-            bool returnValue = false;
 
             //if the width can be split into to cells large enough to hold a room (at least 10 wide)
-            if (_mapCells[indexOfMapCellToSplit].Height - 10 > 0)
+            if (_mapCells[indexOfMapCellToSplit].Height > 10)
             {
-                if (_random.Next(_mapCells[indexOfMapCellToSplit].Height) > _chanceToSplit)
+                int randomChanceToSplit = _random.Next(_mapCells[indexOfMapCellToSplit].Height);
+                if (randomChanceToSplit > _chanceToSplit)
                 {
                     //Calculate width of the old cell and new cell
 
@@ -130,12 +131,9 @@ namespace ProceduralMapGenerator
 
                     //Create new cell at index of old with new width
 
-                    _mapCells.Insert(indexOfMapCellToSplit, new MapCell { Height = newCellHeight, Width = _mapCells[indexOfMapCellToSplit].Width });
-                    returnValue = true;
+                    _mapCells.Insert(indexOfMapCellToSplit + 1, new MapCell { Height = newCellHeight, Width = _mapCells[indexOfMapCellToSplit].Width });
                 }
             }
-
-            return returnValue;
         }
 
     }

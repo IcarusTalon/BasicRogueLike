@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.IO;
+using ProceduralMapGenerator;
 
 namespace XNAMapContentSolution
 {
@@ -13,8 +14,8 @@ namespace XNAMapContentSolution
     public class Map
     {
         private MapTile[,] _mapTiles;
-        int _rowNumber = 3;
-        int _columnNumber = 3;
+       // int _rowNumber = 3;
+       // int _columnNumber = 3;
 
         public MapTile this[float X, float Y]
         {
@@ -28,30 +29,34 @@ namespace XNAMapContentSolution
         public void Initialize()
         {
 
-            _mapTiles = new MapTile[_rowNumber, _columnNumber];
 
 
-            string mapTemp = string.Empty;
-            string[] mapRowsTemp;
-            string[] mapColumnTemp;
+            ProceduralMap proceduralMap = new ProceduralMap();
+            _mapTiles = new MapTile[proceduralMap.Height, proceduralMap.Width];
+
+
+            //string mapTemp = string.Empty;
+            //string[] mapRowsTemp;
+            //string[] mapColumnTemp;
 
             MapTileType currentTile;
-            using (StreamReader streamReader = new StreamReader("MapTest1.txt"))
-            {
-                mapTemp = streamReader.ReadToEnd();
-                mapRowsTemp = mapTemp.Split('\n');
-                mapColumnTemp = mapRowsTemp[0].Split(',');
+            //using (StreamReader streamReader = new StreamReader("MapTest1.txt"))
+            //{
+                //mapTemp = streamReader.ReadToEnd();
+                //mapRowsTemp = mapTemp.Split('\n');
+                //mapColumnTemp = mapRowsTemp[0].Split(',');
 
 
-                _mapTiles = new MapTile[mapColumnTemp.Count(), mapRowsTemp.Count()];
+                //_mapTiles = new MapTile[mapColumnTemp.Count(), mapRowsTemp.Count()];
                 Random random = new Random();
 
-                for (int i = mapRowsTemp.Count() - 1; i >= 0; i--)
+                for (int i = proceduralMap.Width - 1; i >= 0; i--)
                 {
-                    mapColumnTemp = mapRowsTemp[i].Split(',');
-                    for (int j = mapColumnTemp.Count() - 1; j >= 0; j--)
+                   // mapColumnTemp = mapRowsTemp[i].Split(',');
+                    for (int j = proceduralMap.Height - 1; j >= 0; j--)
                     {
-                        currentTile = (MapTileType)int.Parse(mapColumnTemp[j].Trim());
+                        //currentTile = (MapTileType)int.Parse(mapColumnTemp[j].Trim());
+                        currentTile = (MapTileType)proceduralMap.CellValues[j, i];
                         Rectangle positionRectangle = new Rectangle(j * 32, i * 32, 32, 32);
                         _mapTiles[j, i] = new MapTile();
 
@@ -80,7 +85,7 @@ namespace XNAMapContentSolution
                     }
 
                 }
-            }
+            //}
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

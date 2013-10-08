@@ -128,6 +128,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ProceduralMapGenerator\ProceduralMapGenerator.csproj">
+      <Project>{BF3F4BDE-69F1-4B75-9DE2-669E6CED46C0}</Project>
+      <Name>ProceduralMapGenerator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XNAMapContentSolutionContent\XNAMapContentSolutionContent.contentproj">
       <Name>XNAMapContentSolutionContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
