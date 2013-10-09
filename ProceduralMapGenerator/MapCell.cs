@@ -54,12 +54,13 @@ namespace ProceduralMapGenerator
                             //Floor of room...
                             TileValues[w, h] = 1;
                         }
-                        else
-                        {
-                            TileValues[w, h] = 100;
-                        }
                     }
- 
+                    
+                    
+                    if(TileValues[w, h] == 0)
+                    {
+                        TileValues[w, h] = 100;
+                    } 
                 }
             }
         }
