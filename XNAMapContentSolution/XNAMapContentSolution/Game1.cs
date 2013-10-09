@@ -70,7 +70,7 @@ namespace XNAMapContentSolution
         protected override void Initialize()
         {
             _map.Initialize();
-            _player.Initialize(1, 1);
+            _player.Initialize(_map.MapDimensions.X / 2, _map.MapDimensions.Y / 2);
             
             base.Initialize();
         }

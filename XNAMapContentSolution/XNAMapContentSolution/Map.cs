@@ -14,8 +14,14 @@ namespace XNAMapContentSolution
     public class Map
     {
         private MapTile[,] _mapTiles;
-       // int _rowNumber = 3;
-       // int _columnNumber = 3;
+
+        public Point MapDimensions
+        {
+            get
+            {
+                return new Point(_mapTiles.GetLength(0), _mapTiles.GetLength(1));
+            }
+        }
 
         public MapTile this[float X, float Y]
         {

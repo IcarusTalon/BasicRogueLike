@@ -9,7 +9,7 @@ namespace ProceduralMapGenerator
     public class ProceduralMap
     {
         private int _minimumMapDimension = 50;
-        private int _maximumMapDimension = 200;
+        private int _maximumMapDimension = 100;
 
         private int _chanceToSplit = 10;
 
@@ -39,7 +39,7 @@ namespace ProceduralMapGenerator
             int previousNumberOfCells = 0;
 
             //TODO: Change loop to split cells based on width(recursively?)
-            while (previousNumberOfCells != _maximumMapDimension / 20)
+            while (previousNumberOfCells != _maximumMapDimension / 30)
             {
                 previousNumberOfCells++;
 
@@ -51,8 +51,19 @@ namespace ProceduralMapGenerator
 
             CellValues = new int[Width, Height];
 
-            foreach (MapCell currentMapCell in _mapCells)
+            for(int i = 0; i < _mapCells.Count; i++)
             {
+                MapCell currentMapCell = _mapCells[i];
+                MapCell nextMapCell;
+                if (i == _mapCells.Count - 1)
+                {
+                    nextMapCell = _mapCells[0];
+                }
+                else
+                {
+                    nextMapCell = _mapCells[i + 1];
+                }
+
                 currentMapCell.GenerateRoom();
 
                 for (int w = 0; w < currentMapCell.Width; w++)
@@ -62,6 +73,54 @@ namespace ProceduralMapGenerator
                         CellValues[currentMapCell.UpperLeftCorner.X + w, currentMapCell.UpperLeftCorner.Y + h] = currentMapCell.TileValues[w, h];
                     }
                 }
+
+                GeneratePath(currentMapCell, nextMapCell);
+            }
+        }
+
+        private void GeneratePath(MapCell currentMapCell, MapCell nextMapCell)
+        {
+            Point currentLocation = currentMapCell.CenterPoint;
+            int spacesToMoveX = Math.Abs(currentLocation.X - nextMapCell.CenterPoint.X);
+            int spacesToMoveY = Math.Abs(currentLocation.Y - nextMapCell.CenterPoint.Y);
+            int totalSpacesToMove = spacesToMoveX + spacesToMoveY;
+
+            int firstMove = _random.Next(1, totalSpacesToMove + 1);
+
+            bool LastMovedX = false;
+            bool MoveX = false;
+
+            if (_random.Next(1, totalSpacesToMove + 1) < spacesToMoveX)
+            {
+                MoveX = true;
+            }
+            else
+            {
+                MoveX = false;
+            }
+
+
+
+
+            while (currentLocation != nextMapCell.CenterPoint)
+            {
+                if (MoveX)
+                {
+                    //MoveX                    
+                }
+                else
+                {
+                    //moveY
+                }
+                //Set current space to floor.
+
+                LastMovedX = MoveX;
+
+
+                //if last move X, 1 in spacesToMoveY to switch
+                //if last move Y, 1 in spacesToMoveX to switch
+
+ 
             }
         }
 
