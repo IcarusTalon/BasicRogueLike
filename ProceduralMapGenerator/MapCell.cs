@@ -15,7 +15,21 @@ namespace ProceduralMapGenerator
         public int RoomWidth;
         public int RoomHeight;
         public Point RoomUpperLeftCorner;
-        public int Value;
+        public int[,] TileValues;
+
+        private Point _centerPoint;
+        public Point CenterPoint
+        {
+            get
+            {
+                if (_centerPoint == null)
+                {
+                    _centerPoint = new Point(UpperLeftCorner.X + ((RoomUpperLeftCorner.X + RoomWidth) / 2), UpperLeftCorner.Y + ((RoomUpperLeftCorner.Y + RoomHeight) / 2));
+                }
+
+                return _centerPoint;
+            }
+        }
 
         private Random _random;
 
@@ -27,20 +41,22 @@ namespace ProceduralMapGenerator
             RoomUpperLeftCorner.X = _random.Next(1, (Width - RoomWidth) / 2);
             RoomUpperLeftCorner.Y = _random.Next(1, (Height - RoomHeight) / 2);
 
-            for (int i = 0; i < Width; i++)
+            TileValues = new int[Width, Height];
+
+            for (int w = 0; w < Width; w++)
             {
-                for (int j = 0; j < Height; j++)
+                for (int h = 0; h < Height; h++)
                 {
-                    if (i > RoomUpperLeftCorner.X && i < RoomUpperLeftCorner.X + RoomWidth)
+                    if (w > RoomUpperLeftCorner.X && w < RoomUpperLeftCorner.X + RoomWidth)
                     {
-                        if (j > RoomUpperLeftCorner.Y && j < RoomUpperLeftCorner.Y + RoomHeight)
+                        if (h > RoomUpperLeftCorner.Y && h < RoomUpperLeftCorner.Y + RoomHeight)
                         {
                             //Floor of room...
-                            Value = 1;
+                            TileValues[w, h] = 1;
                         }
                         else
                         {
-                            Value = 100;
+                            TileValues[w, h] = 100;
                         }
                     }
  

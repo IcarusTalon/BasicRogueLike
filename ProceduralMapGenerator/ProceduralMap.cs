@@ -9,7 +9,7 @@ namespace ProceduralMapGenerator
     public class ProceduralMap
     {
         private int _minimumMapDimension = 20;
-        private int _maximumMapDimension = 100;
+        private int _maximumMapDimension = 20;
 
         private int _chanceToSplit = 10;
 
@@ -38,9 +38,10 @@ namespace ProceduralMapGenerator
         {
             int previousNumberOfCells = 0;
 
-            while (previousNumberOfCells != _mapCells.Count)
+            //TODO: Change loop to split cells based on width(recursively?)
+            while (previousNumberOfCells != 2)
             {
-                previousNumberOfCells = _mapCells.Count;
+                previousNumberOfCells++;
 
                 for (int i = _mapCells.Count - 1; i >= 0; i--)
                 {
@@ -50,27 +51,16 @@ namespace ProceduralMapGenerator
 
             CellValues = new int[Height, Width];
 
-            //int currentCellX = 0;
-            //int currentCellY = 0;
-
-            int currentX = 0;
-            int currentY = 0;
-
             foreach (MapCell currentMapCell in _mapCells)
             {
                 currentMapCell.GenerateRoom();
-                currentX = currentMapCell.UpperLeftCorner.X;
-                currentY = currentMapCell.UpperLeftCorner.Y;
 
-                for (int i = 0; i < currentMapCell.Height; i++)
+                for (int w = 0; w < currentMapCell.Width; w++)
                 {
-                    for (int j = 0; j < currentMapCell.Width; j++)
+                    for (int h = 0; h < currentMapCell.Height; h++)
                     {
-                        CellValues[currentY, currentX] = currentMapCell.Value;
-                        currentY++;
+                        CellValues[currentMapCell.UpperLeftCorner.X + w, currentMapCell.UpperLeftCorner.Y + h] = currentMapCell.TileValues[w, h];
                     }
-                    currentY = 0;
-                    currentX++;
                 }
             }
         }
@@ -102,8 +92,8 @@ namespace ProceduralMapGenerator
 
 
                     //Create new cell at index of old with new width
-
-                    _mapCells.Insert(indexOfMapCellToSplit + 1, new MapCell { Height = _mapCells[indexOfMapCellToSplit].Height, Width = newCellWidth, UpperLeftCorner = new Point(oldCellWidth, _mapCells[indexOfMapCellToSplit].Height) });
+                    int newUpperLeftCornerX = _mapCells[indexOfMapCellToSplit].UpperLeftCorner.X + oldCellWidth;
+                    _mapCells.Insert(indexOfMapCellToSplit + 1, new MapCell { Height = _mapCells[indexOfMapCellToSplit].Height, Width = newCellWidth, UpperLeftCorner = new Point(newUpperLeftCornerX, _mapCells[indexOfMapCellToSplit].UpperLeftCorner.Y) });
                 }
             }
         }
@@ -129,8 +119,8 @@ namespace ProceduralMapGenerator
 
 
                     //Create new cell at index of old with new width
-
-                    _mapCells.Insert(indexOfMapCellToSplit + 1, new MapCell { Height = newCellHeight, Width = _mapCells[indexOfMapCellToSplit].Width, UpperLeftCorner = new Point(_mapCells[indexOfMapCellToSplit].UpperLeftCorner.X, oldCellHeight) });
+                    int newUpperLeftCornerY = _mapCells[indexOfMapCellToSplit].UpperLeftCorner.Y + oldCellHeight;
+                    _mapCells.Insert(indexOfMapCellToSplit + 1, new MapCell { Height = newCellHeight, Width = _mapCells[indexOfMapCellToSplit].Width, UpperLeftCorner = new Point(_mapCells[indexOfMapCellToSplit].UpperLeftCorner.X, newUpperLeftCornerY) });
                 }
             }
         }
