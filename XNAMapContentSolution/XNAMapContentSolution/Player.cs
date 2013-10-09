@@ -14,14 +14,6 @@ namespace XNAMapContentSolution
 
         private Rectangle _position;
 
-        //public Rectangle Position
-        //{
-        //    get
-        //    {
-        //        return _position;
-        //    }
-        //}
-
         private int _x;
         private int _y;
 
@@ -102,51 +94,6 @@ namespace XNAMapContentSolution
             }
         }
 
-        //public void MoveUp()
-        //{
-        //    Y += -1;
-        //}
-
-        //public void MoveUpRight()
-        //{
-        //    Y += -1;
-        //    X += 1; 
-        //}
-
-        //public void MoveRight()
-        //{
-        //    X += 1;
-        //}
-
-        //public void MoveDownRight()
-        //{
-        //    Y += 1;
-        //    X += 1; 
-        //}
-
-        //public void MoveDown()
-        //{
-        //    Y += 1;
-        //}
-
-        //public void MoveDownLeft()
-        //{
-        //    Y += 1;
-        //    X += -1;
-        //}
-
-        //public void MoveLeft()
-        //{
-        //    X += -1;
-        //}
-
-        //public void MoveUpLeft()
-        //{
-        //    Y += -1;
-        //    X += -1; 
-        //}
-
-
 
         public void Initialize(int x, int y)
         {
@@ -162,13 +109,6 @@ namespace XNAMapContentSolution
         {
             spriteBatch.Draw(PlayerSprite.SpriteSheet, _position , _bodyTexture, Color.White);
         }
-
-        //public void Update(GameTime gameTime)
-        //{
-        //    _position.X += _position.X;
-        //    _position.Y += _position.Y;
-        //}
-
 
     }
 }

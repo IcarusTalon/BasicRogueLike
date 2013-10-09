@@ -32,7 +32,7 @@ namespace XNAMapContentSolution
 
 
             ProceduralMap proceduralMap = new ProceduralMap();
-            _mapTiles = new MapTile[proceduralMap.Height, proceduralMap.Width];
+            _mapTiles = new MapTile[proceduralMap.Width, proceduralMap.Height];
 
 
             //string mapTemp = string.Empty;
@@ -50,15 +50,15 @@ namespace XNAMapContentSolution
                 //_mapTiles = new MapTile[mapColumnTemp.Count(), mapRowsTemp.Count()];
                 Random random = new Random();
 
-                for (int i = proceduralMap.Width - 1; i >= 0; i--)
+                for (int w = proceduralMap.Width - 1; w >= 0; w--)
                 {
                    // mapColumnTemp = mapRowsTemp[i].Split(',');
-                    for (int j = proceduralMap.Height - 1; j >= 0; j--)
+                    for (int h = proceduralMap.Height - 1; h >= 0; h--)
                     {
                         //currentTile = (MapTileType)int.Parse(mapColumnTemp[j].Trim());
-                        currentTile = (MapTileType)proceduralMap.CellValues[j, i];
-                        Rectangle positionRectangle = new Rectangle(j * 32, i * 32, 32, 32);
-                        _mapTiles[j, i] = new MapTile();
+                        currentTile = (MapTileType)proceduralMap.CellValues[w, h];
+                        Rectangle positionRectangle = new Rectangle(w * 32, h * 32, 32, 32);
+                        _mapTiles[w, h] = new MapTile();
 
                         switch (currentTile)
                         {
@@ -66,18 +66,18 @@ namespace XNAMapContentSolution
                             case MapTileType.GreenWall:
                                 if (random.Next(0, 10) == 0)
                                 {
-                                    _mapTiles[j, i].Initialize(WallTiles.GreentWalls[random.Next(0, 20)], positionRectangle);
+                                    _mapTiles[w, h].Initialize(WallTiles.GreentWalls[random.Next(0, 20)], positionRectangle);
                                 }
                                 else
                                 {
-                                    _mapTiles[j, i].Initialize(WallTiles.GreentWalls[0], positionRectangle);
+                                    _mapTiles[w, h].Initialize(WallTiles.GreentWalls[0], positionRectangle);
                                 }
                                 break;
 
 
                             //Floors
                             case MapTileType.GreenFloor:
-                                _mapTiles[j, i].Initialize(FloorTiles.GreentTile, new Rectangle(), new Rectangle[] { new Rectangle() }, positionRectangle);
+                                _mapTiles[w, h].Initialize(FloorTiles.GreentTile, new Rectangle(), new Rectangle[] { new Rectangle() }, positionRectangle);
                                 break;
 
                         }

@@ -33,9 +33,13 @@ namespace ProceduralMapGenerator
 
         private Random _random;
 
+        public MapCell()
+        {
+            _random = new Random(); 
+        }
+
         internal void GenerateRoom()
         {
-            _random = new Random();
             RoomWidth = _random.Next(3, Width - 2);
             RoomHeight = _random.Next(3, Height - 2);
             RoomUpperLeftCorner.X = _random.Next(1, (Width - RoomWidth) / 2);

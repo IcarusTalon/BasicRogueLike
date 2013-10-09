@@ -8,8 +8,8 @@ namespace ProceduralMapGenerator
 {
     public class ProceduralMap
     {
-        private int _minimumMapDimension = 20;
-        private int _maximumMapDimension = 20;
+        private int _minimumMapDimension = 50;
+        private int _maximumMapDimension = 200;
 
         private int _chanceToSplit = 10;
 
@@ -39,7 +39,7 @@ namespace ProceduralMapGenerator
             int previousNumberOfCells = 0;
 
             //TODO: Change loop to split cells based on width(recursively?)
-            while (previousNumberOfCells != 2)
+            while (previousNumberOfCells != _maximumMapDimension / 20)
             {
                 previousNumberOfCells++;
 
@@ -49,7 +49,7 @@ namespace ProceduralMapGenerator
                 }
             }
 
-            CellValues = new int[Height, Width];
+            CellValues = new int[Width, Height];
 
             foreach (MapCell currentMapCell in _mapCells)
             {
