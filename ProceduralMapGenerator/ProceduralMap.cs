@@ -95,9 +95,19 @@ namespace ProceduralMapGenerator
 
         private void GeneratePath(MapCell currentMapCell, MapCell nextMapCell)
         {
-            Point currentLocation = currentMapCell.CenterPoint;
-            int spacesToMoveX = Math.Abs(currentLocation.X - nextMapCell.CenterPoint.X);
-            int spacesToMoveY = Math.Abs(currentLocation.Y - nextMapCell.CenterPoint.Y);
+            //CellValues[currentMapCell.RoomCenterPoint.X, currentMapCell.RoomCenterPoint.Y] = 101;
+            //CellValues[nextMapCell.RoomCenterPoint.X, nextMapCell.RoomCenterPoint.Y] = 101;
+
+           //CellValues[currentMapCell.UpperLeftCorner.X, currentMapCell.UpperLeftCorner.Y] = 101;
+            //CellValues[nextMapCell.UpperLeftCorner.X, nextMapCell.UpperLeftCorner.Y] = 101;
+
+            //CellValues[currentMapCell.RoomUpperLeftCorner.X, currentMapCell.RoomUpperLeftCorner.Y] = 101;
+            //CellValues[nextMapCell.RoomUpperLeftCorner.X, nextMapCell.RoomUpperLeftCorner.Y] = 101;
+            //return;
+
+            Point currentLocation = currentMapCell.RoomCenterPoint;
+            int spacesToMoveX = Math.Abs(currentLocation.X - nextMapCell.RoomCenterPoint.X);
+            int spacesToMoveY = Math.Abs(currentLocation.Y - nextMapCell.RoomCenterPoint.Y);
             int totalSpacesToMove = spacesToMoveX + spacesToMoveY;
 
             //int firstMove = _random.Next(1, totalSpacesToMove + 1);
@@ -105,7 +115,7 @@ namespace ProceduralMapGenerator
             //bool LastMovedX = false;
             bool MoveX = false;
 
-            if (_random.Next(1, totalSpacesToMove + 1) < spacesToMoveX)
+            if (_random.Next(1, totalSpacesToMove + 1) < spacesToMoveX && spacesToMoveX > 0)
             {
                 MoveX = true;
             }
@@ -117,11 +127,11 @@ namespace ProceduralMapGenerator
 
 
 
-            while (currentLocation != nextMapCell.CenterPoint)
+            while (currentLocation != nextMapCell.RoomCenterPoint)
             {
                 if (MoveX)
                 {
-                    if (currentLocation.X > nextMapCell.CenterPoint.X)
+                    if (currentLocation.X > nextMapCell.RoomCenterPoint.X)
                     {
                         currentLocation.X--;
                     }
@@ -133,7 +143,7 @@ namespace ProceduralMapGenerator
                 }
                 else
                 {
-                    if (currentLocation.Y > nextMapCell.CenterPoint.Y)
+                    if (currentLocation.Y > nextMapCell.RoomCenterPoint.Y)
                     {
                         currentLocation.Y--;
                     }
@@ -143,27 +153,43 @@ namespace ProceduralMapGenerator
                     }
                     spacesToMoveY--;
                 }
-                CellValues[currentLocation.X, currentLocation.Y] = 101;
+                if (currentLocation == currentMapCell.RoomCenterPoint || currentLocation == nextMapCell.RoomCenterPoint)
+                {
+                    CellValues[currentLocation.X, currentLocation.Y] = 101;
+                }
+                else
+                {
+                    CellValues[currentLocation.X, currentLocation.Y] = 1;
+                }
 
                 //LastMovedX = MoveX;
 
                 //TODO: Broken!!!
                 //if last move X, 1 in spacesToMoveY to switch
-                if (MoveX)
-                {
-                    if (spacesToMoveX > 0 && _random.Next(1, spacesToMoveX + 1) == 1)
-                    {
-                        MoveX = false;
-                    }
-                }
-                else
-                {
-                    if (spacesToMoveY > 0 && _random.Next(1, spacesToMoveY + 1) == 1)
-                    {
-                        MoveX = true;
-                    }
-                }
+                //if (MoveX)
+                //{
+                //    if (spacesToMoveX > 0 && _random.Next(1, spacesToMoveX + 1) == 1)
+                //    {
+                //        MoveX = false;
+                //    }
+                //}
+                //else
+                //{
+                //    if (spacesToMoveY > 0 && _random.Next(1, spacesToMoveY + 1) == 1)
+                //    {
+                //        MoveX = true;
+                //    }
+                //}
                 //if last move Y, 1 in spacesToMoveX to switch 
+
+                if (MoveX && spacesToMoveX == 0)
+                {
+                    MoveX = false;
+                }
+                if (!MoveX && spacesToMoveY == 0)
+                {
+                    MoveX = true;
+                }
             }
         }
 

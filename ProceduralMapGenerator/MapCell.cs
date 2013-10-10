@@ -14,20 +14,32 @@ namespace ProceduralMapGenerator
         public int Height;
         public int RoomWidth;
         public int RoomHeight;
-        public Point RoomUpperLeftCorner;
+        private Point roomUpperLeftCornerReleativeToCell;
         public int[,] TileValues;
 
-        private Point? _centerPoint = null;
-        public Point CenterPoint
+        private Point? _roomUpperLeftCorner;
+        public Point RoomUpperLeftCorner
         {
             get
             {
-                if (_centerPoint == null)
+                if (_roomUpperLeftCorner == null)
                 {
-                    _centerPoint = new Point(UpperLeftCorner.X + ((RoomUpperLeftCorner.X + RoomWidth) / 2), UpperLeftCorner.Y + ((RoomUpperLeftCorner.Y + RoomHeight) / 2));
+                    _roomUpperLeftCorner = new Point(UpperLeftCorner.X + roomUpperLeftCornerReleativeToCell.X, UpperLeftCorner.Y + roomUpperLeftCornerReleativeToCell.Y);
+                }
+                return _roomUpperLeftCorner.Value; 
+            }
+        }
+        private Point? _roomCenterPoint = null;
+        public Point RoomCenterPoint
+        {
+            get
+            {
+                if (_roomCenterPoint == null)
+                {
+                    _roomCenterPoint = new Point(UpperLeftCorner.X + roomUpperLeftCornerReleativeToCell.X + (RoomWidth / 2), UpperLeftCorner.Y + roomUpperLeftCornerReleativeToCell.Y + (RoomHeight / 2));
                 }
 
-                return _centerPoint.Value;
+                return _roomCenterPoint.Value;
             }
         }
 
@@ -42,8 +54,8 @@ namespace ProceduralMapGenerator
         {
             RoomWidth = _random.Next(3, Width - 2 + 1);
             RoomHeight = _random.Next(3, Height - 2 + 1);
-            RoomUpperLeftCorner.X = _random.Next(1, (Width - RoomWidth));
-            RoomUpperLeftCorner.Y = _random.Next(1, (Height - RoomHeight));
+            roomUpperLeftCornerReleativeToCell.X = _random.Next(1, (Width - RoomWidth));
+            roomUpperLeftCornerReleativeToCell.Y = _random.Next(1, (Height - RoomHeight));
 
             TileValues = new int[Width, Height];
 
@@ -62,9 +74,9 @@ namespace ProceduralMapGenerator
                     { }
                     else
                     {
-                        if (w >= RoomUpperLeftCorner.X && w <= RoomUpperLeftCorner.X + RoomWidth)
+                        if (w >= roomUpperLeftCornerReleativeToCell.X && w <= roomUpperLeftCornerReleativeToCell.X + RoomWidth)
                         {
-                            if (h >= RoomUpperLeftCorner.Y && h <= RoomUpperLeftCorner.Y + RoomHeight)
+                            if (h >= roomUpperLeftCornerReleativeToCell.Y && h <= roomUpperLeftCornerReleativeToCell.Y + RoomHeight)
                             {
                                 //Floor of room...
                                 TileValues[w, h] = 1;
