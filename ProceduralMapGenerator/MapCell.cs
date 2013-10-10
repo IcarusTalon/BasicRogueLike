@@ -17,7 +17,7 @@ namespace ProceduralMapGenerator
         public Point RoomUpperLeftCorner;
         public int[,] TileValues;
 
-        private Point _centerPoint;
+        private Point? _centerPoint = null;
         public Point CenterPoint
         {
             get
@@ -27,23 +27,23 @@ namespace ProceduralMapGenerator
                     _centerPoint = new Point(UpperLeftCorner.X + ((RoomUpperLeftCorner.X + RoomWidth) / 2), UpperLeftCorner.Y + ((RoomUpperLeftCorner.Y + RoomHeight) / 2));
                 }
 
-                return _centerPoint;
+                return _centerPoint.Value;
             }
         }
 
-        private Random _random;
+        //private Random _random;
 
         public MapCell()
         {
-            _random = new Random(); 
+            //_random = new Random(); 
         }
 
-        internal void GenerateRoom()
+        internal void GenerateRoom(Random _random)
         {
-            RoomWidth = _random.Next(3, Width - 2);
-            RoomHeight = _random.Next(3, Height - 2);
-            RoomUpperLeftCorner.X = _random.Next(1, (Width - RoomWidth) / 2);
-            RoomUpperLeftCorner.Y = _random.Next(1, (Height - RoomHeight) / 2);
+            RoomWidth = _random.Next(3, Width - 2 + 1);
+            RoomHeight = _random.Next(3, Height - 2 + 1);
+            RoomUpperLeftCorner.X = _random.Next(1, (Width - RoomWidth));
+            RoomUpperLeftCorner.Y = _random.Next(1, (Height - RoomHeight));
 
             TileValues = new int[Width, Height];
 
@@ -51,20 +51,32 @@ namespace ProceduralMapGenerator
             {
                 for (int h = 0; h < Height; h++)
                 {
-                    if (w > RoomUpperLeftCorner.X && w < RoomUpperLeftCorner.X + RoomWidth)
+
+                    //TODO: Take out - draw outline for testing purpose...
+                    //if (w == 0 || h == 0 || w == Width - 1 || h == Height - 1)
+                    //{
+                    //    TileValues[w, h] = 101;
+
+                    //}
+                    if (1 == 0)
+                    { }
+                    else
                     {
-                        if (h > RoomUpperLeftCorner.Y && h < RoomUpperLeftCorner.Y + RoomHeight)
+                        if (w >= RoomUpperLeftCorner.X && w <= RoomUpperLeftCorner.X + RoomWidth)
                         {
-                            //Floor of room...
-                            TileValues[w, h] = 1;
+                            if (h >= RoomUpperLeftCorner.Y && h <= RoomUpperLeftCorner.Y + RoomHeight)
+                            {
+                                //Floor of room...
+                                TileValues[w, h] = 1;
+                            }
+                        }
+
+
+                        if (TileValues[w, h] == 0)
+                        {
+                            TileValues[w, h] = 100;
                         }
                     }
-                    
-                    
-                    if(TileValues[w, h] == 0)
-                    {
-                        TileValues[w, h] = 100;
-                    } 
                 }
             }
         }

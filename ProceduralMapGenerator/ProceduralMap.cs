@@ -25,8 +25,8 @@ namespace ProceduralMapGenerator
         {
             _random = new Random();
 
-            Height = _random.Next(_minimumMapDimension, _maximumMapDimension);
-            Width = _random.Next(_minimumMapDimension, _maximumMapDimension);
+            Height = _random.Next(_minimumMapDimension, _maximumMapDimension + 1);
+            Width = _random.Next(_minimumMapDimension, _maximumMapDimension + 1);
 
             _mapCells = new List<MapCell>();
             _mapCells.Add(new MapCell { Height = Height, Width = Width, UpperLeftCorner = new Point(0, 0) });
@@ -54,6 +54,31 @@ namespace ProceduralMapGenerator
             for(int i = 0; i < _mapCells.Count; i++)
             {
                 MapCell currentMapCell = _mapCells[i];
+                //MapCell nextMapCell;
+                //if (i == _mapCells.Count - 1)
+                //{
+                //    nextMapCell = _mapCells[0];
+                //}
+                //else
+                //{
+                //    nextMapCell = _mapCells[i + 1];
+                //}
+
+                currentMapCell.GenerateRoom(_random);
+
+                for (int w = 0; w < currentMapCell.Width; w++)
+                {
+                    for (int h = 0; h < currentMapCell.Height; h++)
+                    {
+                        CellValues[currentMapCell.UpperLeftCorner.X + w, currentMapCell.UpperLeftCorner.Y + h] = currentMapCell.TileValues[w, h];
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < _mapCells.Count; i++)
+            {
+                MapCell currentMapCell = _mapCells[i];
                 MapCell nextMapCell;
                 if (i == _mapCells.Count - 1)
                 {
@@ -62,16 +87,6 @@ namespace ProceduralMapGenerator
                 else
                 {
                     nextMapCell = _mapCells[i + 1];
-                }
-
-                currentMapCell.GenerateRoom();
-
-                for (int w = 0; w < currentMapCell.Width; w++)
-                {
-                    for (int h = 0; h < currentMapCell.Height; h++)
-                    {
-                        CellValues[currentMapCell.UpperLeftCorner.X + w, currentMapCell.UpperLeftCorner.Y + h] = currentMapCell.TileValues[w, h];
-                    }
                 }
 
                 GeneratePath(currentMapCell, nextMapCell);
@@ -85,9 +100,9 @@ namespace ProceduralMapGenerator
             int spacesToMoveY = Math.Abs(currentLocation.Y - nextMapCell.CenterPoint.Y);
             int totalSpacesToMove = spacesToMoveX + spacesToMoveY;
 
-            int firstMove = _random.Next(1, totalSpacesToMove + 1);
+            //int firstMove = _random.Next(1, totalSpacesToMove + 1);
 
-            bool LastMovedX = false;
+            //bool LastMovedX = false;
             bool MoveX = false;
 
             if (_random.Next(1, totalSpacesToMove + 1) < spacesToMoveX)
@@ -106,21 +121,49 @@ namespace ProceduralMapGenerator
             {
                 if (MoveX)
                 {
-                    //MoveX                    
+                    if (currentLocation.X > nextMapCell.CenterPoint.X)
+                    {
+                        currentLocation.X--;
+                    }
+                    else
+                    {
+                        currentLocation.X++;
+                    }
+                    spacesToMoveX--;
                 }
                 else
                 {
-                    //moveY
+                    if (currentLocation.Y > nextMapCell.CenterPoint.Y)
+                    {
+                        currentLocation.Y--;
+                    }
+                    else
+                    {
+                        currentLocation.Y++;
+                    }
+                    spacesToMoveY--;
                 }
-                //Set current space to floor.
+                CellValues[currentLocation.X, currentLocation.Y] = 101;
 
-                LastMovedX = MoveX;
+                //LastMovedX = MoveX;
 
-
+                //TODO: Broken!!!
                 //if last move X, 1 in spacesToMoveY to switch
-                //if last move Y, 1 in spacesToMoveX to switch
-
- 
+                if (MoveX)
+                {
+                    if (spacesToMoveX > 0 && _random.Next(1, spacesToMoveX + 1) == 1)
+                    {
+                        MoveX = false;
+                    }
+                }
+                else
+                {
+                    if (spacesToMoveY > 0 && _random.Next(1, spacesToMoveY + 1) == 1)
+                    {
+                        MoveX = true;
+                    }
+                }
+                //if last move Y, 1 in spacesToMoveX to switch 
             }
         }
 
@@ -136,13 +179,15 @@ namespace ProceduralMapGenerator
             //if the width can be split into to cells large enough to hold a room (at least 10 wide)
             if (_mapCells[indexOfMapCellToSplit].Width > 10)
             {
+                //TODO: this random calculation sucks.
                 int randomChanceToSplit = _random.Next(_mapCells[indexOfMapCellToSplit].Width);
                 if (randomChanceToSplit > _chanceToSplit)
                 {
                     //Calculate width of the old cell and new cell
 
                     int oldCellWidth = _mapCells[indexOfMapCellToSplit].Width;
-                    int newCellWidth = _random.Next(5, oldCellWidth - 5);
+
+                    int newCellWidth = _random.Next(5, oldCellWidth - 5 + 1);
                     oldCellWidth = oldCellWidth - newCellWidth;
 
                     //change width of old cell
@@ -169,7 +214,7 @@ namespace ProceduralMapGenerator
                     //Calculate width of the old cell and new cell
 
                     int oldCellHeight = _mapCells[indexOfMapCellToSplit].Height;
-                    int newCellHeight = _random.Next(5, oldCellHeight - 5);
+                    int newCellHeight = _random.Next(5, oldCellHeight - 5 + 1);
                     oldCellHeight = oldCellHeight - newCellHeight;
 
                     //change width of old cell

@@ -72,13 +72,17 @@ namespace XNAMapContentSolution
                             case MapTileType.GreenWall:
                                 if (random.Next(0, 10) == 0)
                                 {
-                                    _mapTiles[w, h].Initialize(WallTiles.GreentWalls[random.Next(0, 20)], positionRectangle);
+                                    _mapTiles[w, h].Initialize(WallTiles.GreenWalls[random.Next(0, 20)], positionRectangle);
                                 }
                                 else
                                 {
-                                    _mapTiles[w, h].Initialize(WallTiles.GreentWalls[0], positionRectangle);
+                                    _mapTiles[w, h].Initialize(WallTiles.GreenWalls[0], positionRectangle);
                                 }
                                 break;
+                            case MapTileType.BlueWall:
+                                _mapTiles[w, h].Initialize(WallTiles.BlueWalls[0], positionRectangle);
+                                break;
+                                
 
 
                             //Floors

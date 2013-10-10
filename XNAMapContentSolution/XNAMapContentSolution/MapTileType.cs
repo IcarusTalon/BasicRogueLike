@@ -8,6 +8,7 @@ namespace XNAMapContentSolution
     public enum MapTileType
     {
         GreenFloor = 1,
-        GreenWall = 100
+        GreenWall = 100,
+        BlueWall = 101
     }
 }
