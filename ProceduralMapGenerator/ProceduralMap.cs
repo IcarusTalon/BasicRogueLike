@@ -153,14 +153,14 @@ namespace ProceduralMapGenerator
                     }
                     spacesToMoveY--;
                 }
-                if (currentLocation == currentMapCell.RoomCenterPoint || currentLocation == nextMapCell.RoomCenterPoint)
-                {
-                    CellValues[currentLocation.X, currentLocation.Y] = 101;
-                }
-                else
-                {
+                //if (currentLocation == currentMapCell.RoomCenterPoint || currentLocation == nextMapCell.RoomCenterPoint)
+                //{
+                //    CellValues[currentLocation.X, currentLocation.Y] = 101;
+                //}
+                //else
+                //{
                     CellValues[currentLocation.X, currentLocation.Y] = 1;
-                }
+                //}
 
                 //LastMovedX = MoveX;
 
@@ -205,7 +205,7 @@ namespace ProceduralMapGenerator
             //if the width can be split into to cells large enough to hold a room (at least 10 wide)
             if (_mapCells[indexOfMapCellToSplit].Width > 10)
             {
-                //TODO: this random calculation sucks.
+                //TODO: this random calculation sucks. make it so the rooms tend to be larger?
                 int randomChanceToSplit = _random.Next(_mapCells[indexOfMapCellToSplit].Width);
                 if (randomChanceToSplit > _chanceToSplit)
                 {
