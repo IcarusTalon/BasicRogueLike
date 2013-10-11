@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace XNAMapContentSolution
+namespace TileMapping
 {
 
     public class MapTile
@@ -60,6 +60,11 @@ namespace XNAMapContentSolution
             else if (!_wallTile.IsEmpty)
             {
                 spriteBatch.Draw(WallTiles.WallSheet, _position, _wallTile, Color.White);
+            }
+
+            if (!_featureTile.IsEmpty)
+            {
+                spriteBatch.Draw(FeatureTile.FeaturesSheet, _position, _featureTile, Color.White);
             }
         }
     }

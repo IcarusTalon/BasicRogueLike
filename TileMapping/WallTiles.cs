@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace XNAMapContentSolution
+namespace TileMapping
 {
     public static class WallTiles
     {
