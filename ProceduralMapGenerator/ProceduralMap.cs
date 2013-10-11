@@ -91,6 +91,29 @@ namespace ProceduralMapGenerator
 
                 GeneratePath(currentMapCell, nextMapCell);
             }
+
+            int numberOfRooms = _mapCells.Count;
+            int numberOfStairs = 0;
+            int chanceToCreateStair = 0;
+
+            for (int i = 0; i < _mapCells.Count; i++)
+            {
+                chanceToCreateStair = _random.Next(numberOfRooms - numberOfStairs, numberOfRooms + 1);
+
+                if (chanceToCreateStair == numberOfRooms)
+                {
+                    CreateStairCaseDown();
+                    numberOfStairs++;
+                }
+            }
+        }
+
+        private void CreateStairCaseDown()
+        {
+            int cellToGenerateIn = _random.Next(0, _mapCells.Count);
+            MapCell currentMapCell = _mapCells[cellToGenerateIn];
+            Point coordinatesOfStairs = new Point(_random.Next(currentMapCell.RoomUpperLeftCorner.X, currentMapCell.RoomUpperLeftCorner.X + currentMapCell.RoomWidth), _random.Next(currentMapCell.RoomUpperLeftCorner.Y, currentMapCell.RoomUpperLeftCorner.Y + currentMapCell.RoomHeight));
+            CellValues[coordinatesOfStairs.X, coordinatesOfStairs.Y] = 101;
         }
 
         private void GeneratePath(MapCell currentMapCell, MapCell nextMapCell)
