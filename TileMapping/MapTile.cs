@@ -26,14 +26,14 @@ namespace TileMapping
             }
         }
 
-        private void Initialize(Rectangle floorTile, Rectangle wallTile, Rectangle featureTile, Rectangle[] floorItems, Rectangle position)
-        {
-            _floorTile = floorTile;
-            _wallTile = wallTile;
-            _featureTile = featureTile;
-            _floorItems = floorItems;
-            _position = position; 
-        }
+        //private void Initialize(Rectangle floorTile, Rectangle wallTile, Rectangle featureTile, Rectangle[] floorItems, Rectangle position)
+        //{
+        //    _floorTile = floorTile;
+        //    _wallTile = wallTile;
+        //    _featureTile = featureTile;
+        //    _floorItems = floorItems;
+        //    _position = position; 
+        //}
 
         public void Initialize(Rectangle wallTile, Rectangle position)
         {
